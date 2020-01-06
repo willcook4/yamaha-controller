@@ -14,6 +14,3 @@
 //   }, 3000); 
 //   })
 // })
-
-
-// API endpoints needed

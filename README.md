@@ -1,3 +1,6 @@
+# Aim of this project
+The aim is to provide an intuitive interface for control of a home theatre receiver. The provided physical remote and web interface is not intuitive or very user friendly. The aim is to make the selection of various inputs and controls automated so that the use of the product is easier for the users.
+
 ## API endpoints needed
 
 - Receiver on
