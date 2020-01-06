@@ -1,0 +1,11 @@
+{
+  "name": "yamaha-backend",
+  "version": "0.0.1",
+  "description": "API contoller for Yamaha receiver",
+  "main": "server.js",
+  "author": "Will Cook",
+  "license": "MIT",
+  "dependencies": {
+    "yamaha-nodejs": "^0.9.5"
+  }
+}
