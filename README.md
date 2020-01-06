@@ -14,8 +14,12 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 - Receiver off (Standby)
 - Sub ON/OFF
 - Get state from the Reciver, in case of manual changes.
+- Volume Up
+- Volume Down
+- Volume Mute
+
 
 ## Build plan
-1. Run stand alone tests using the npm package for the above input selections and criteria.
-2. Build an Express API for the above endpoints
-3. Build a front-end that uses the API.
+1. [x] Run stand alone tests using the npm package for the above input selections and criteria.
+2. [] Build an Express API for the above endpoints
+3. [] Build a front-end that uses the API.
