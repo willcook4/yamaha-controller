@@ -36,13 +36,21 @@ YamahaAPI.prototype.receiverAvailable = async function() {
  */
 const yamaha = new YamahaAPI(RECEIVER_IP_ADDRESS)
 
+
+/**
+ * GET /power
+ * 
+ * ACTION: Returns the power status
+ */
+
+
 /**
  * POST /power
  *
  * Mounted :
  *    POST /audio/receiver/power
  * 
- * required payload
+ * Required payload
  * {
  *  @param {String} action, either 'power-on' OR 'power-off'
  * }
@@ -100,11 +108,5 @@ router
       }
     }).catch(next)
   })
-
-
-    /** 
- * Receiver on
- */
-
 
 module.exports = router
