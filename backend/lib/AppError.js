@@ -21,7 +21,10 @@ class AppError extends BaseError {
       case 'receiver.unavailable':
         msg = 'Unable to connect to the receiver'
         break
-            default:
+      case 'receiver.power.status.error':
+        msg = 'Unable to get the power status'
+        break
+      default:
         this.type = `Invalid AppError type of [${type}] specified`
         msg = 'Specify a valid AppError.type'
         break
