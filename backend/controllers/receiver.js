@@ -13,7 +13,7 @@ const ON = 'power-on'
 const OFF = 'power-off'
 
 // TODO move to .env
-// Reciever settings
+// Receiver settings
 const RECEIVER_IP_ADDRESS = "10.0.1.3"
 
 /**
