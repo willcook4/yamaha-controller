@@ -26,7 +26,7 @@ app.use('/', require('./config/routes'))
 /**
  * Validation Error Middleware
  *
- * These errors need to be consistant so the interfaces can present the info
+ * These errors need to be consistant so the UI can present the info
  * back to the end use.
  */
 app.use(function (err, req, res, next) {
@@ -65,7 +65,7 @@ tcpPortUsed.check(API_PORT, '127.0.0.1')
       console.log(`✔ API server listening on port ${API_PORT} in ${app.get('env')} mode`)
       console.log(`✔ API version ${pkg.version}`, )
     })
-
-    // increase the timeout to 2 minutes
+    // // increase the timeout to 2 minutes
     server.timeout = 120000
+    // server.timeout = 3000
   })
