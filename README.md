@@ -61,4 +61,4 @@ message: "OK"
 ```
 
 ## Development notes
-- The manual testing file in [Insomnia](https://insomnia.rest/) format file is in ./Audio_API_Insomnia.json
+- The manual testing file in [Insomnia](https://insomnia.rest/) format file is in /backend/Audio_API_Insomnia.json
