@@ -18,7 +18,6 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 - Volume Down
 - Volume Mute
 
-
 ## Build plan
 1. [x] Run stand alone tests using the npm package for the above input selections and criteria.
 2. [] Build an Express API for the above endpoints
@@ -40,3 +39,26 @@ yarn install
 ``` bash
 yarn start
 ```
+
+## Endpoints
+
+* GET ```/diagnostics``` returns information about the API
+e.g.
+```
+{
+name: "yamaha-backend",
+version: "0.0.1",
+up: 18.998,
+message: "OK"
+}
+```
+
+* POST ```/audio/receiver/power``` takes an action string
+```
+{ 
+  "action": "power-on" OR "power-off"
+}
+```
+
+## Development notes
+- The manual testing file in [Insomnia](https://insomnia.rest/) format file is in ./Audio_API_Insomnia.json
