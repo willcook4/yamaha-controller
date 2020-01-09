@@ -99,7 +99,7 @@ e.g. response
 }
 ```
 
-### Toggle Mute on a zone or the receiver
+### Toggle Mute on a zone of the receiver
 * POST ```/audio/receiver/volume/mute``` take a zone(optional, defaults to: 'Main_Zone) and action
 
 Payload:
