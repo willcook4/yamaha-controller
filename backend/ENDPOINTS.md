@@ -83,6 +83,21 @@ e.g response
 }
 ```
 
+### Get the current volume of a zone on the receiver
+* GET ```/audio/receiver/zone/:zone``` takes a zone(required)
+
+e.g. response
+```
+{
+  "message": "OK",
+  "zone": "Main_Zone",
+  "zoneON": true,
+  "zoneMuted": false,
+  "zoneVol": -525,
+  "zoneCurrentInput": "AUDIO1"
+}
+```
+
 ### Toggle Mute on a zone or the receiver
 * POST ```/audio/receiver/volume/mute``` take a zone(optional, defaults to: 'Main_Zone) and action
 

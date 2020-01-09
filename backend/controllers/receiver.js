@@ -90,7 +90,7 @@ router
 
         let powerStatus = (!(isOn && !isOff) && (isOff && !isOn)) ? OFF: ON
         console.log('Receiver power status: ', powerStatus)
-        return res.status(202).json({
+        return res.status(200).json({
                 message: 'OK',
                 status: powerStatus
                })          
@@ -307,6 +307,64 @@ router
     }
   }).catch(next)
 })
+
+/**
+ * GET /zone/:zone
+ * Mounted: 
+ *    GET /audio/receiver/zone/:zone
+ * Action: Return the info of a zone, a zone is a string in RECEIVER_ZONES
+ */
+router
+  .route('/zone/:zone')
+  .get(async(req, res, next) => {
+    let data = req.params
+    console.log('Received zone info request', data)
+
+    // perform check that the receiver is available for requests
+    await yamaha.receiverAvailable()
+      .then((receiverAvailable) => {
+        if(!receiverAvailable) {
+          throw new AppError('receiver.unavailable')
+        }
+
+        let constraints = {
+          zone: {
+            presence: {
+              allowEmpty: false
+            },
+            inclusion: {
+              within: RECEIVER_ZONES,
+              message: `zone must be listed in RECEIVER_ZONES`
+            }
+          }
+        }
+        
+        validate.async(data, constraints, { wrapErrors: ApiValidationError })
+          .then(async () => {
+            await yamaha.getBasicInfo(data.zone).then((zoneData) => { 
+              let parsedZoneData = {
+                zoneON: zoneData.isOn(),
+                zoneMuted: zoneData.isMuted(),
+                zoneVol: zoneData.getVolume(),
+                zoneCurrentInput: zoneData.getCurrentInput(),
+                // TODO subwoofer info
+              }
+    
+              return res.status(200).json({
+                message: 'OK',
+                zone: data.zone,
+                ...parsedZoneData
+              })
+            })
+            .catch(e => {
+              console.log(e)
+              throw new AppError('receiver.error')
+            })
+          })      
+          .catch(next)
+      })
+      .catch(next)
+  })
 
 /**
  * POST /volume/mute
