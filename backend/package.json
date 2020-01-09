@@ -18,6 +18,7 @@
     "yamaha-nodejs": "^0.9.5"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   }
 }
