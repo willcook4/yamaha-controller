@@ -15,6 +15,7 @@ message: "OK"
 
 ### Turn the Receiver ON/OFF
 * POST ```/audio/receiver/power``` takes an action string
+
 Payload:
 ```
 { 
@@ -44,6 +45,7 @@ e.g. response
 
 ### Select the input on the receiver 
 * POST ```/audio/receiver/input-select``` takes an input string
+
 Payload:
 ```
 {
@@ -58,6 +60,29 @@ e.g. response
   "inputSelected": "AUDIO1"
 }
 ```
+
+### Change a zones volume on the receiver
+* POST ```/audio/receiver/volume``` takes a direction, amount and zone(optional, defaults to: 'Main_Zone)
+
+Payload: 
+```
+{
+	"direction": "UP",
+	"amount": 10,
+	"zone": "Main_Zone"
+}
+```
+
+e.g response
+```
+{
+  "message": "OK",
+  "action": "volume-change",
+  "text": "Changed the receiver volume for Main_Zone UP by 10",
+  "newVolume": -690
+}
+```
+
 
 ## Errors
 * ANY ```/audio/receiver``` Unable to connect to the receiver

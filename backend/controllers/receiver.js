@@ -17,7 +17,10 @@ const OFF = 'power-off'
 // TODO move to .env
 // Receiver settings
 const RECEIVER_IP_ADDRESS = "10.0.1.3"
-const RECIEVER_INPUTS = ['PHONO', 'TUNER', 'AirPlay', 'AUDIO1', 'AUDIO2', 'AV1']
+const RECEIVER_INPUTS = ['PHONO', 'TUNER', 'AirPlay', 'AUDIO1', 'AUDIO2', 'AV1']
+const RECEIVER_VOLUME_CONTROLS = ['UP', 'DOWN']
+const RECEIVER_VOLUME_UNITS = [10, 20, 30, 40, 50]
+const RECEIVER_ZONES = ["Main_Zone", "Zone_2"]
 
 /**
  * Detect if the network connection to the receiver is up (do we have connectivity?)
@@ -30,6 +33,21 @@ YamahaAPI.prototype.receiverAvailable = async function() {
   console.log(`Receiver is ${resp.alive ? chalk.green('available') : chalk.red('unavailable')}`)
   if(!resp.alive) return false
   return true
+}
+
+/**
+ * #########################
+ *     Helper Functions
+ * #########################
+ */
+
+/** 
+ * Get receiver volume of the provided zone
+ * @param {string} zone one of the RECEIVER_ZONES
+ */ 
+async function getCurrentVolume (zone) {
+  let info = await yamaha.getBasicInfo(zone)
+  return info.getVolume()
 }
 
 /**
@@ -148,7 +166,7 @@ router
  * 
  * Required payload
  * {
- *  @param {String} input, one of the RECIEVER_INPUTS
+ *  @param {String} input, one of the RECEIVER_INPUTS
  * }
  *
  * ACTION: Change the input on the receiver to
@@ -165,8 +183,8 @@ router
           allowEmpty: false
         },
         inclusion: {
-          within: RECIEVER_INPUTS,
-          message: `value must be one of the following: ${RECIEVER_INPUTS}` 
+          within: RECEIVER_INPUTS,
+          message: `value must be one of the following: ${RECEIVER_INPUTS}` 
         }
       }
     }
@@ -194,5 +212,94 @@ router
         })
     }).catch(next)
   })
+
+  /**
+ * POST /volume
+ *
+ * Mounted:
+ *    POST /audio/receiver/volume
+ * 
+ * Payload
+ * {
+ *  @param {String} direction, one of the RECEIVER_VOLUME_CONTROLS
+ *  @param {String} amount, one of the RECEIVER_VOLUME_UNITS, must be divisible by 5
+ *  @param {String} zone, optional
+ * }
+ *
+ * ACTION: Change the volume on the receiver
+ */
+router
+.route('/volume')
+.post(async(req, res, next) => {
+  console.log('Received volume change request', req.body)
+  let data = req.body
+
+  let constraints = {
+    direction: {
+      presence: {
+        allowEmpty: false
+      },
+      inclusion: {
+        within: RECEIVER_VOLUME_CONTROLS,
+        message: `value must be one of the following: ${RECEIVER_VOLUME_CONTROLS}` 
+      }
+    }, 
+    amount: {
+      presence: {
+        allowEmpty: false
+      },
+      inclusion: {
+        within: RECEIVER_VOLUME_UNITS,
+        message: `value must be one of the following: ${RECEIVER_VOLUME_UNITS}`
+      }
+    },
+    zone: {
+      // optional, if not provided "Main_Zone" will be used
+      // for string options see: RECEIVER_ZONES
+    }
+  }
+
+  validate.async(data, constraints, { wrapErrors: ApiValidationError })
+  .then(async () => {
+    let receiverAvailable = await yamaha.receiverAvailable()
+
+    // perform check that the receiver is available for requests
+    if(!receiverAvailable) {
+      throw new AppError('receiver.unavailable')
+    }
+
+    async function sendResponse (data) {
+      let newVol = await getCurrentVolume(data.zone)
+      console.log(`Changed the receiver volume for ${data.zone} ${data.direction} by ${data.amount}`)
+      return res.status(202).json({
+        message: 'OK',
+        action: "volume-change",
+        text: `Changed the receiver volume for ${data.zone} ${data.direction} by ${data.amount}`,
+        newVolume: newVol
+      })
+    }
+    
+    data.zone = data.zone || "Main_Zone" // default to main zone, see RECEIVER_ZONES
+    if(data.direction === 'UP') { // Note any change to RECEIVER_VOLUME_CONTROLS must be updated here
+      await yamaha.volumeUp(data.amount, data.zone)
+        .then((resp) => {
+          return sendResponse(data)
+        })
+        .catch(e => {
+          console.log(e)
+          throw new AppError('receiver.error')
+        })
+    } else {
+      await yamaha.volumeDown(data.amount, data.zone)
+        .then((resp) => {
+          return sendResponse(data)
+        })
+        .catch(e => {
+          console.log(e)
+          throw new AppError('receiver.error')
+        })
+    }
+  }).catch(next)
+})
 
 module.exports = router
