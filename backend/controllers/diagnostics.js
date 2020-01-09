@@ -4,29 +4,33 @@ const process = require('process')
 let router = express.Router()
 let pkg = require('../package.json')
 
-
 // TODO WIP
 async function serverInfo() {
   try {
       let data = {}
-      console.log('Information: ')
       let info = await si.currentLoad()
       let memInfo = await si.mem()
-      console.log(memInfo) 
-      // let usedPercent = memInfo.used
-      console.log('mem used(bytes): ', memInfo.used)
-      console.log('memtotal(bytes): ', memInfo.total)
-      console.log('men free(bytes):', memInfo.free)
-      console.log('mem active(bytes): ', memInfo.active)
-      console.log('mem total - free(bytes): ', memInfo.total - memInfo.free)
-      // as a percent
-      console.log('Used as Percent: ', (memInfo.total - memInfo.free) / memInfo.total)
-      // console.log('mem used: ', (memInfo.used / memInfo.total) / 1073741824)
+      
+      // on linux, all memInfo values are in kB,
+      // console.log(memInfo) 
+
+      data.untested = { // TODO WIP
+        memInfo: {
+          free: memInfo.free,
+          total: memInfo.total,
+          usedNum:  memInfo.used,
+          usedPercent: (memInfo.total - memInfo.free) / memInfo.total,
+          active: memInfo.active
+        }
+      }
+
+      // Tested
       data.processId = process.pid
-      data.cpuLoad = info.currentload.toFixed(2) + '%'
-      console.log('...')
-      console.log(data)
-      console.log('...')
+      data.cpuLoad = info.currentload.toFixed(2) + '%' 
+      // console.log('...')
+      // console.log(data)
+      // console.log('...')
+      return data
   } catch (e) {
       console.log(e)
   }
@@ -37,14 +41,14 @@ router
   .get(async(req, res, next) => {
     let info = await serverInfo()
 
-    console.log('info: ', info)
     return res.status(202).json({
       message: 'OK',
+      hostOS: process.platform,
       nodeEnv: process.env.NODE_ENV,
       uptime: process.uptime(),
       name: pkg.name,
       version: pkg.version,
-      info
+      ...info
     })
   })
 
