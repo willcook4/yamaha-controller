@@ -13,7 +13,7 @@ The aim is to provide an intuitive interface for control of a home theatre recei
   - AV1(HDMI 1) [Bluetooth input]
 - [x]Receiver off (Standby)
 - Sub ON/OFF
-- Get state from the Reciver, in case of manual changes. (refresh UI)
+- [x]Get state from the Reciver, in case of manual changes. (refresh UI)
 - [x]Volume Up
 - [x]Volume Down
 - [x]Volume Mute
@@ -21,7 +21,7 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 
 ## Build plan
 1. [x] Run stand alone tests using the npm package for the above input selections and criteria.
-2. [] Build an Express API for the above endpoints
+2. [x] Build an Express API for the above endpoints
 3. [] Build a front-end that uses the API.
 
 ## Dependencies
