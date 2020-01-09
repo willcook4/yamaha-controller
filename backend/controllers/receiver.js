@@ -17,6 +17,7 @@ const OFF = 'power-off'
 // TODO move to .env
 // Receiver settings
 const RECEIVER_IP_ADDRESS = "10.0.1.3"
+const RECIEVER_INPUTS = ['PHONO', 'TUNER', 'AirPlay', 'AUDIO1', 'AUDIO2', 'AV1']
 
 /**
  * Detect if the network connection to the receiver is up (do we have connectivity?)
@@ -119,23 +120,78 @@ router
         console.log('Received ON power request')
         yamaha.powerOn()
           .then(() => {
-            console.log("powered the receiver ON")
+            console.log("Powered the receiver ON")
             return res.status(202).json({
               message: 'OK',
               action: req.body.action
             })
-          }).catch(err => console.log('HERE A: ', err))
+          })
       } else {
         console.log('Received OFF power request')
         yamaha.powerOff()
           .then(() => {
-            console.log("powered the receiver OFF")
+            console.log("Powered the receiver OFF")
             return res.status(202).json({
               message: 'OK',
               action: req.body.action
             })
-          }).catch(err => console.log('HERE B: ', err))
+          })
       }
+    }).catch(next)
+  })
+
+/**
+ * POST /input-select
+ *
+ * Mounted:
+ *    POST /audio/receiver/input-select
+ * 
+ * Required payload
+ * {
+ *  @param {String} input, one of the RECIEVER_INPUTS
+ * }
+ *
+ * ACTION: Change the input on the receiver to
+ */
+router
+  .route('/input-select')
+  .post(async(req, res, next) => {
+    console.log('Received input-selet request', req.body)
+    let data = req.body
+
+    let constraints = {
+      input: {
+        presence: {
+          allowEmpty: false
+        },
+        inclusion: {
+          within: RECIEVER_INPUTS,
+          message: `value must be one of the following: ${RECIEVER_INPUTS}` 
+        }
+      }
+    }
+
+    validate.async(data, constraints, { wrapErrors: ApiValidationError })
+    .then(async () => {
+      let receiverAvailable = await yamaha.receiverAvailable()
+
+      // perform check that the receiver is available for requests
+      if(!receiverAvailable) {
+        throw new AppError('receiver.unavailable')
+      }
+
+      yamaha.setMainInputTo(data.input)
+        .then( function() {
+          console.log(`Changed the receiver input to ${data.input}`)
+          return res.status(202).json({
+            message: 'OK',
+            inputSelected: data.input
+          })
+        })
+        .catch(e => {
+          console.log(e)
+          throw new AppError('receiver.error')
+        })
     }).catch(next)
   })
 

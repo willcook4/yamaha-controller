@@ -42,6 +42,23 @@ e.g. response
 }
 ```
 
+### Select the input on the receiver 
+* POST ```/audio/receiver/input-select``` takes an input string
+Payload:
+```
+{
+	"input": "AUDIO1"
+}
+```
+
+e.g. response
+```
+{
+  "message": "OK",
+  "inputSelected": "AUDIO1"
+}
+```
+
 ## Errors
 * ANY ```/audio/receiver``` Unable to connect to the receiver
 
