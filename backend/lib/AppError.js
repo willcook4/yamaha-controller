@@ -26,6 +26,7 @@ class AppError extends BaseError {
         break
       case 'receiver.error':
         msg = 'Receiver error'
+        break
       default:
         this.type = `Invalid AppError type of [${type}] specified`
         msg = 'Specify a valid AppError.type'
