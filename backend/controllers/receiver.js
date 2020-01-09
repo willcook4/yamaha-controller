@@ -1,7 +1,7 @@
 const YamahaAPI = require('yamaha-nodejs')
 const express = require('express')
 const ping = require('ping')
-// const chalk = require('chalk')
+const chalk = require('chalk')
 
 let router = express.Router()
 let { validate, ApiValidationError } = require('../lib/Validator')
@@ -63,7 +63,7 @@ router
           throw new AppError('receiver.power.status.error')
         }
 
-        let powerStatus = (!(isOn && !isOff) && (isOff && !isOn)) ? 'OFF': 'ON'
+        let powerStatus = (!(isOn && !isOff) && (isOff && !isOn)) ? OFF: ON
         console.log('Receiver power status: ', powerStatus)
         return res.status(202).json({
                 message: 'OK',
