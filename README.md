@@ -26,6 +26,15 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 
 ## Dependencies
 - [Yamaha Node](https://github.com/PSeitz/yamaha-nodejs), [(npm)](https://www.npmjs.com/package/yamaha-nodejs)
+- [bluebird, promise library](https://www.npmjs.com/package/bluebird)
+- [body-parser, node json body parser](https://www.npmjs.com/package/body-parser)
+- [chalk, colorful logging](https://www.npmjs.com/package/chalk)
+- [express, web framework for node](https://www.npmjs.com/package/express)
+- [helmet, security package](https://www.npmjs.com/package/helmet)
+- [ping, node wrapper for ping command](https://www.npmjs.com/package/ping)
+- [systeminformation, host information provider](https://www.npmjs.com/package/systeminformation)
+- [tcp-port-used, host checker provider](https://www.npmjs.com/package/tcp-port-used)
+- [validate.js, validation library](https://www.npmjs.com/package/validate.js)
 
 ## How to setup and run
 - Move into the backend folder
@@ -40,14 +49,14 @@ yarn install
 ``` bash
 yarn start
 ```
-- Optionally run with nodemon (mus tbe globally installed)
+- Optionally develop/run with nodemon (must be globally installed)
 ``` bash
 yarn dev
 ```
 
 
 ## Endpoints
-See ./ENDPOINTS.md
+See ./backend/ENDPOINTS.md
 
 ## Development notes
 - The manual testing file in [Insomnia](https://insomnia.rest/) format file is in /backend/Audio_API_Insomnia.json

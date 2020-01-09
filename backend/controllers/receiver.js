@@ -145,6 +145,7 @@ router
         yamaha.powerOn()
           .then(() => {
             console.log("Powered the receiver ON")
+            // TODO check the status of the receiver first with yamaha.getBasicInfo(res), res.isOn() 
             return res.status(202).json({
               message: 'OK',
               action: req.body.action
@@ -155,6 +156,7 @@ router
         yamaha.powerOff()
           .then(() => {
             console.log("Powered the receiver OFF")
+            // TODO check the status of the receiver first with yamaha.getBasicInfo(res), res.isOff() 
             return res.status(202).json({
               message: 'OK',
               action: req.body.action

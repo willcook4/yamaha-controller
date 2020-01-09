@@ -1,4 +1,5 @@
 ## Endpoints
+All endpoints return Google Style camelCase key names with values as strings, numbers or booleans.
 
 ### Diagnostics
 * GET ```/diagnostics``` returns information about the API
