@@ -21,6 +21,7 @@ const RECEIVER_INPUTS = ['PHONO', 'TUNER', 'AirPlay', 'AUDIO1', 'AUDIO2', 'AV1']
 const RECEIVER_VOLUME_CONTROLS = ['UP', 'DOWN']
 const RECEIVER_VOLUME_UNITS = [10, 20, 30, 40, 50]
 const RECEIVER_ZONES = ["Main_Zone", "Zone_2"]
+const RECEIVER_MUTE_OPTIONS = ["MUTE", "UNMUTE"]
 
 /**
  * Detect if the network connection to the receiver is up (do we have connectivity?)
@@ -48,6 +49,11 @@ YamahaAPI.prototype.receiverAvailable = async function() {
 async function getCurrentVolume (zone) {
   let info = await yamaha.getBasicInfo(zone)
   return info.getVolume()
+}
+
+async function isMuted (zone) {
+  let info = await yamaha.getBasicInfo(zone)
+  return info.isMuted()
 }
 
 /**
@@ -213,7 +219,7 @@ router
     }).catch(next)
   })
 
-  /**
+/**
  * POST /volume
  *
  * Mounted:
@@ -301,5 +307,88 @@ router
     }
   }).catch(next)
 })
+
+/**
+ * POST /volume/mute
+ *
+ * Mounted:
+ *    POST /audio/receiver/volume/mute
+ * 
+ * Payload
+ * {
+ *  @param {String} zone, optional
+ *  @param {String} action, one of the RECEIVER_MUTE_OPTIONS
+ * }
+ *
+ * ACTION: Mute or Unmute volume on the receiver
+ */
+router
+.route('/volume/mute')
+.post(async(req, res, next) => {
+  console.log('Received mute change request', req.body)
+  let data = req.body
+
+  let constraints = {
+    zone: {
+      // optional, if not provided "Main_Zone" will be used
+      // for string options see: RECEIVER_ZONES
+    },
+    action: {
+      presence: {
+        allowEmpty: false
+      },
+      inclusion: {
+        within: RECEIVER_MUTE_OPTIONS,
+        message: `value must be one of the following: ${RECEIVER_MUTE_OPTIONS}` 
+      }
+    }
+  }
+
+  validate.async(data, constraints, { wrapErrors: ApiValidationError })
+  .then(async () => {
+    let receiverAvailable = await yamaha.receiverAvailable()
+
+    // perform check that the receiver is available for requests
+    if(!receiverAvailable) {
+      throw new AppError('receiver.unavailable')
+    }
+    data.zone = data.zone || "Main_Zone" // default to main zone, see RECEIVER_ZONES
+    if(data.action === 'MUTE') { 
+      await yamaha.muteOn(data.zone)
+        .then(async function() {
+          let muted = await isMuted(data.zone)
+          return res.status(202).json({
+            message: 'OK',
+            action: 'volume-mute',
+            text: `Changed the receiver volume for ${data.zone} to MUTE`,
+            muted
+          })
+        })
+        .catch(e => {
+          console.log(e)
+          throw new AppError('receiver.error')
+        })
+    } else {
+      await yamaha.muteOff(data.zone)
+        .then(async function() {
+          let newVol = await getCurrentVolume(data.zone)
+          let muted = await isMuted(data.zone)
+          return res.status(202).json({
+            message: 'OK',
+            action: 'volume-unmute',
+            text: `Changed the receiver volume for ${data.zone} to UNMUTED`,
+            newVolume: newVol,
+            muted
+          })
+        })
+        .catch(e => {
+          console.log(e)
+          throw new AppError('receiver.error')
+        })
+    }
+  })
+  .catch(next)
+})
+
 
 module.exports = router

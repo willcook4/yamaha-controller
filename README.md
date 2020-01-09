@@ -3,21 +3,21 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 
 ## API endpoints needed
 
-- Receiver on
-- Input select
+- [x]Receiver on
+- [x]Input select
   - Phono
   - Tuner
   - Airplay
   - Audio1 (Optical)
   - Audio2 (Analog)
   - AV1(HDMI 1) [Bluetooth input]
-- Receiver off (Standby)
+- [x]Receiver off (Standby)
 - Sub ON/OFF
-- Get state from the Reciver, in case of manual changes.
-- Volume Up
-- Volume Down
-- Volume Mute
-- Power Status
+- Get state from the Reciver, in case of manual changes. (refresh UI)
+- [x]Volume Up
+- [x]Volume Down
+- [x]Volume Mute
+- [x]Power Status
 
 ## Build plan
 1. [x] Run stand alone tests using the npm package for the above input selections and criteria.
@@ -39,6 +39,10 @@ yarn install
 - Start the backend
 ``` bash
 yarn start
+```
+- Optionally run with nodemon (mus tbe globally installed)
+``` bash
+yarn dev
 ```
 
 

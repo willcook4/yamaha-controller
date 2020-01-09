@@ -83,6 +83,28 @@ e.g response
 }
 ```
 
+### Toggle Mute on a zone or the receiver
+* POST ```/audio/receiver/volume/mute``` take a zone(optional, defaults to: 'Main_Zone) and action
+
+Payload:
+```
+{
+	"action": "UNMUTE",
+	"zone": "Main_Zone"
+}
+```
+
+example response:
+```
+{
+  "message": "OK",
+  "action": "volume-unmute",
+  "text": "Changed the receiver volume for Main_Zone to UNMUTED",
+  "newVolume": -545,
+  "muted": false
+}
+```
+
 
 ## Errors
 * ANY ```/audio/receiver``` Unable to connect to the receiver
