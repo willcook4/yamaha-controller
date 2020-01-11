@@ -84,7 +84,7 @@ e.g response
 }
 ```
 
-### Get the current volume of a zone on the receiver
+### Get the current info of a zone on the receiver
 * GET ```/audio/receiver/zone/:zone``` takes a zone(required)
 
 e.g. response

@@ -2,7 +2,8 @@ const pkg = require('./package.json')
 const express = require('express')
 const bodyParser = require('body-parser')
 const tcpPortUsed = require('tcp-port-used')
-const helmet = require('helmet');
+const helmet = require('helmet')
+const cors = require('cors')
 // .env ????
 const API_PORT = 9000
 
@@ -20,6 +21,12 @@ app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: true, limit: '25mb' }))
 // parse application/json
 app.use(bodyParser.json({limit: '25mb'}))
+
+// Enable CORS
+app.use(cors({
+  origin: true,
+  credentials: true
+}))
 
 app.use('/', require('./config/routes'))
 
