@@ -29,9 +29,10 @@ const RECEIVER_MUTE_OPTIONS = ["MUTE", "UNMUTE"]
  * @return {boolean}
  */
 YamahaAPI.prototype.receiverAvailable = async function() {
-  console.log('Checking if the receiver is available...')
+  // FULLL_DEBUG console.log('Checking if the receiver is available...')
   let resp = await ping.promise.probe(RECEIVER_IP_ADDRESS, { timeout: 2 })
-  console.log(`Receiver is ${resp.alive ? chalk.green('available') : chalk.red('unavailable')}`)
+  // FULL DEBUG console.log(`Receiver is ${resp.alive ? chalk.green('available') : chalk.red('unavailable')}`)
+  !resp.alive && console.log(`Receiver is ${chalk.red('unavailable')}`)
   if(!resp.alive) return false
   return true
 }
@@ -53,6 +54,7 @@ async function getCurrentVolume (zone) {
 
 async function isMuted (zone) {
   let info = await yamaha.getBasicInfo(zone)
+  console.log('isMuted')
   return info.isMuted()
 }
 
@@ -108,6 +110,7 @@ router
  * Required payload
  * {
  *  @param {String} action, either 'power-on' OR 'power-off'
+  * @param {String} zone any of the RECEIVER_ZONES
  * }
  *
  * ACTION: Turn the receiver ON or OFF
@@ -127,7 +130,15 @@ router
           within: [ ON, OFF ],
           message: "action must be either 'power-on' OR 'power-off'"
         }
-        
+      },
+      zone: {
+        presence: {
+          allowEmpty: false
+        },
+        inclusion: {
+          within: RECEIVER_ZONES,
+          message: `zone must be one of the ${RECEIVER_ZONES}`
+        }
       }
     }
 
@@ -142,24 +153,28 @@ router
 
       if(data.action === ON) {
         console.log('Received ON power request')
-        yamaha.powerOn()
+        yamaha.powerOn(data.zone)
           .then(() => {
             console.log("Powered the receiver ON")
             // TODO check the status of the receiver first with yamaha.getBasicInfo(res), res.isOn() 
             return res.status(202).json({
               message: 'OK',
-              action: req.body.action
+              action: req.body.action,
+              zone: data.zone,
+              isOn: true
             })
           })
       } else {
         console.log('Received OFF power request')
-        yamaha.powerOff()
+        yamaha.powerOff(data.zone)
           .then(() => {
             console.log("Powered the receiver OFF")
             // TODO check the status of the receiver first with yamaha.getBasicInfo(res), res.isOff() 
             return res.status(202).json({
               message: 'OK',
-              action: req.body.action
+              action: req.body.action,
+              zone: data.zone,
+              isOn: false
             })
           })
       }
@@ -175,6 +190,7 @@ router
  * Required payload
  * {
  *  @param {String} input, one of the RECEIVER_INPUTS
+ *  @param {String} zone, one of the RECEIVER_ZONES
  * }
  *
  * ACTION: Change the input on the receiver to
@@ -194,6 +210,15 @@ router
           within: RECEIVER_INPUTS,
           message: `value must be one of the following: ${RECEIVER_INPUTS}` 
         }
+      },
+      zone: {
+        presence: {
+          allowEmpty: false
+        },
+        inclusion: {
+          within: RECEIVER_ZONES,
+          message: `value must be one of the following: ${RECEIVER_ZONES}` 
+        }
       }
     }
 
@@ -206,12 +231,13 @@ router
         throw new AppError('receiver.unavailable')
       }
 
-      yamaha.setMainInputTo(data.input)
-        .then( function() {
-          console.log(`Changed the receiver input to ${data.input}`)
+      await yamaha.setInputTo(data.input, data.zone)
+        .then(() => {
+          console.log(`Changed the receiver input to ${data.input} for ${data.zone}`)
           return res.status(202).json({
             message: 'OK',
-            inputSelected: data.input
+            inputSelected: data.input,
+            zone: data.zone
           })
         })
         .catch(e => {
@@ -413,15 +439,19 @@ router
       throw new AppError('receiver.unavailable')
     }
     data.zone = data.zone || "Main_Zone" // default to main zone, see RECEIVER_ZONES
-    if(data.action === 'MUTE') { 
+    if(data.action === 'MUTE') {
       await yamaha.muteOn(data.zone)
         .then(async function() {
-          let muted = await isMuted(data.zone)
+          let newVol = await getCurrentVolume(data.zone)
+          console.log('Bang!')
+          let isZoneMuted = await isMuted(data.zone)
+          console.log(isMuted)
           return res.status(202).json({
             message: 'OK',
             action: 'volume-mute',
             text: `Changed the receiver volume for ${data.zone} to MUTE`,
-            muted
+            newVolume: newVol,
+            isMuted: isZoneMuted
           })
         })
         .catch(e => {
@@ -432,13 +462,13 @@ router
       await yamaha.muteOff(data.zone)
         .then(async function() {
           let newVol = await getCurrentVolume(data.zone)
-          let muted = await isMuted(data.zone)
+          let isZoneMuted = await isMuted(data.zone)
           return res.status(202).json({
             message: 'OK',
             action: 'volume-unmute',
             text: `Changed the receiver volume for ${data.zone} to UNMUTED`,
             newVolume: newVol,
-            muted
+            isMuted: isZoneMuted
           })
         })
         .catch(e => {
