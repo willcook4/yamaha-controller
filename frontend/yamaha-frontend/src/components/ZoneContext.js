@@ -12,18 +12,33 @@ const ZoneDispatchContext = React.createContext()
 // Amount volume goes up or down by each time you change
 export const VOLUME_INCREMENT = 10
 
-function zoneReducer(state, action) {
+function zoneReducer(currentState, action) {
   switch(action.type) {
     case 'vol-up': 
     case 'vol-down':
-      return {
-        vol: action.newVolume
+      return {// new state
+        ...currentState,
+        vol: action.newVolume,
       }
-    
-    // TODO
-    case 'mute':
+    case 'MUTE':
+    case 'UNMUTE':
       return {
-        vol: -800 // -80db === MUTE === 0% volume
+        ...currentState,
+        vol: action.newVolume, // -80db === MUTE === 0% volume
+        isMuted: action.isMuted,
+      }
+    case 'power-off':
+    case 'power-on':
+      return {
+        ...currentState,
+        isOn: action.isOn
+      }
+    case 'set-all-states':
+      return {
+        ...currentState,
+        vol: action.vol,
+        isOn: action.isOn,
+        isMuted: action.isMuted,
       }
 
     default: 
@@ -33,7 +48,8 @@ function zoneReducer(state, action) {
 
 function ZoneProvider({children}) {     
   /* NOTE:  vol:  -35db === -350 , 0db is Max volume */
-  const [state, dispatch] = React.useReducer(zoneReducer, { vol: -800,  isOn: false })
+  // const [state, dispatch] = React.useReducer(zoneReducer, { vol: -800,  isOn: false, isMuted: false })
+  const [state, dispatch] = React.useReducer(zoneReducer, {})
   return (
     <ZoneStateContext.Provider value={state}>
       <ZoneDispatchContext.Provider value={dispatch}>
