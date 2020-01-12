@@ -9,15 +9,58 @@ class Api {
    */
   getCurrentInfo(zone) {
     let endpoint = this._makeEndpoint(`/audio/receiver/zone/${zone}`)
-    console.log('ZZZZ: ', endpoint)
     return this._get(endpoint)
   }
 
   /**
-   * Set the volume
-   * @param {*} endpoint 
-   * @param {*} payload 
+   * Toggle the power for a zone on or off
+   * @param {*} zone 
+   * @param {*} action 'power-on' || 'power-off'
    */
+  togglePowerForZone(zone, action) {
+    let endpoint = this._makeEndpoint('/audio/receiver/power')
+    return this._post(endpoint, { zone, action })
+  }
+
+  /**
+   * Mute a zone
+   * @param {String} zone // Zone to action
+   * @param {String} action 'MUTE' || 'UNMUTE'
+   */
+  toggleMuteZone(zone, action) {
+    let endpoint = this._makeEndpoint('/audio/receiver/volume/mute')
+    return this._post(endpoint, { zone, action })
+  }
+
+  /**
+   * Set the volume of a zone
+   * @param {String} direction // 'UP' or 'DOWN'
+   * @param {Int} number // How much up or down in db (0db == Max Volume, -800 is Min Volume)
+   * @param {String} zone // Zone you are changing
+   */
+  changeVolume(direction, amount, zone) {
+    let endpoint = this._makeEndpoint('/audio/receiver/volume')
+    let data = {
+      direction,
+      amount,
+      zone
+    }
+    return this._post(endpoint, data)
+  }
+
+  /**
+   * Select an input source for a zone
+   * @param {String} input // one of the RECEIVER_INPUTS on the API
+   * @param {*} zone // one of the RECEIVER_ZONES on the API
+   */
+  setZoneSource(input, zone) {
+    let endpoint = this._makeEndpoint(`/audio/receiver/input-select`)
+    return this._post(endpoint, { input, zone })
+  }
+
+  _post (endpoint, data) {
+    return axios.post(endpoint, data)
+  }
 
   /**
    * Default method of doing a get request
@@ -27,19 +70,10 @@ class Api {
   _get (endpoint, payload = {}) {
     let options = {
       method: 'get',
-      url: endpoint,
       params: payload,
       responseType: 'json'
     }
-    
-    return axios.get(options)
-  }
-
-  _post (endpoint, payload={}) {
-    let options = {
-
-    }
-    return axios.post(options)
+    return axios.get(endpoint, options)
   }
 
   /**
