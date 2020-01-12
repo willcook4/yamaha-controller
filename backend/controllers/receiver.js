@@ -443,9 +443,7 @@ router
       await yamaha.muteOn(data.zone)
         .then(async function() {
           let newVol = await getCurrentVolume(data.zone)
-          console.log('Bang!')
           let isZoneMuted = await isMuted(data.zone)
-          console.log(isMuted)
           return res.status(202).json({
             message: 'OK',
             action: 'volume-mute',
