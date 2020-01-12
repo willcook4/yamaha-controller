@@ -1,67 +1,78 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-
 import { useZoneState, useZoneDispatch, VOLUME_INCREMENT } from './ZoneContext'
-// import Api from '../lib/Api'
+import Api from '../lib/Api'
 
-
-export function Volume({name}) {
+export function Volume({ zoneName }) {
   const [disabled, setDisabled] = useState(false)
   const dispatch = useZoneDispatch()
-  const { vol } = useZoneState()
-
+  const { vol, isMuted } = useZoneState()
+  
   /**
    * 
    * @param {String} direction 'UP || 'DOWN
-   * @param {String} name Zone name, e.g. 'Main_Zone'
+   * @param {String} zoneName Zone zoneName, e.g. 'Main_Zone'
    */
-  async function changeVolume (direction, name) {
+  async function changeVolume (direction, zoneName) {
     setDisabled(true)
     console.log('Change vol called: ', direction)
     let actionType = 'vol-down'
     if(direction === 'UP'){
       actionType = 'vol-up'
     }
-
-    let endpoint = 'http://localhost:9000/audio/receiver/volume'
-    let data = {
-      direction,
-      amount: VOLUME_INCREMENT,
-      zone: name
-    }
     
     try {
-      let apiResponse = await axios.post(endpoint, data)
-      console.log('apiResp: ', apiResponse)
+      let apiResponse = await Api.changeVolume(direction, VOLUME_INCREMENT, zoneName)
+      // Update the UI with the new volume
       dispatch({type: actionType, newVolume: apiResponse.data.newVolume })
       
     } catch (err) {
       console.log('error.response: ', err.response)
     }
     setDisabled(false)
+    // TODO update the UI with a blink like a IR remote 
   }
 
-  console.log()
+  /**
+   * 
+   * @param {String} zone 
+   * @param {String} action 'MUTE' || 'UNMUTE'
+   */
+  async function toggleMute(action, zone){
+    setDisabled(true)
+    try {
+      let apiResponse = await Api.toggleMuteZone(zone, action)
+      dispatch({ type: action, newVolume: apiResponse.data.newVolume, isMuted: apiResponse.data.isMuted })
+    } catch(err) {
+      console.log('mute err.response: ', err.response)
+    }
+    setDisabled(false)
+  }
+
+  let volAsPercent = Math.round(((800 - (vol * -1)) / 800) * 100)
   return (
     <div>
-      <p>Current volume: {vol}</p>
-      <p>Zone: {name}</p>
+      <hr />
+      <p>Current volume: {isMuted ? `MUTED (${vol})` : vol} [{volAsPercent}%]</p>
+      
+      {/* <p>Zone: {zoneName}</p> */}
       <button
         disabled={disabled}
-        onClick={() => changeVolume('UP', name)}
+        onClick={() => changeVolume('UP', zoneName)}
       >Increase</button>
       
       <br/>
 
       <button
         disabled={disabled}
-        onClick={() => changeVolume('DOWN', name)}
+        onClick={() => changeVolume('DOWN', zoneName)}
       >Decrease</button>
 
       <button
         disabled={disabled}
-        onClick={() => changeVolume('MUTE', name)}
-      >Mute</button>
+        onClick={() => toggleMute(isMuted ? 'UNMUTE' : 'MUTE', zoneName)}
+      >{isMuted ? 'UNMUTE' : 'MUTE'}</button>
+        {/* {isMuted ? 'Muted' : 'unmuted'} */}
+      <hr />
     </div>
   );
 }
