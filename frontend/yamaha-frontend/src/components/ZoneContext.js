@@ -39,6 +39,7 @@ function zoneReducer(currentState, action) {
         vol: action.vol,
         isOn: action.isOn,
         isMuted: action.isMuted,
+        zoneCurrentInput: action.zoneCurrentInput
       }
 
     default: 

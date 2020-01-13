@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Api from '../lib/Api'
 import { useZoneState, useZoneDispatch } from './ZoneContext'
+import { Button } from '../components/Button'
+import { Icon } from '../icons'
 
 /**
  * Power
@@ -26,13 +28,15 @@ import { useZoneState, useZoneDispatch } from './ZoneContext'
 
   return (
     <>
-      <p>Power state for {props.zoneName}:</p>
       <p>{isOn ? 'ON' : 'OFF'}</p>
       {errMsg}
-      <button onClick={() => {
-        let action = isOn ? 'power-off' : 'power-on'
-        togglePower(props.zoneName, action)
-      }}>Turn {isOn ? 'OFF' : 'ON'}</button>
+      <Button
+        btnIcon={<Icon name="power" fill={'grey'} active="TODO" width={40} />}
+        btnText={isOn ? 'Turn OFF' : 'Turn ON'}
+        onClick={() => {
+          let action = isOn ? 'power-off' : 'power-on'
+          togglePower(props.zoneName, action)
+        }} />
     </>
   )
  }
