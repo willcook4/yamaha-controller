@@ -5,13 +5,18 @@ import styled from 'styled-components'
 //  https://neumorphism.io/#dae0e8
 
 const StyledButton = styled('button')`
-  width: 60px;
+  width: 135px;
   height: 60px;
   border-radius: 20px;
   border: none;
   color: grey;
   font-weight: bold;
   margin: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
   span {
     ${props => props.textLeft ? 'margin-right: 4px' : ''};

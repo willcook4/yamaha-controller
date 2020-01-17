@@ -14,7 +14,7 @@ import { SourceSelect } from '../components/SourceSelect'
 
 const ZoneInfo = ({zoneName}) => {
   return (
-    <h3>{zoneName}</h3>
+    <h3 style={{marginTop: '4px', marginBottom: '4px'}}>{zoneName}</h3>
   )
 }
 
@@ -88,7 +88,7 @@ const ZoneSetup = (props) => {
     <ZoneWrapper>
       <Button 
         onClick={() => setGetStatus(true)}
-        btnText="Refresh"
+        btnText={(<span style={{marginLeft: '4px'}}>Refresh <br />Zone</span>)}
         btnIcon={<Icon name="refresh" fill={'grey'} active="TODO" width={30} />}
       />
 
@@ -97,8 +97,8 @@ const ZoneSetup = (props) => {
       {errMsg ? (<ErrorMsg>{errMsg}</ErrorMsg>) : (
       <>
         {isOn && (<>
-                    <Volume zoneName={props.zoneName} />
                     <SourceSelect zoneName={props.zoneName} />
+                    <Volume zoneName={props.zoneName} />
                   </>)}
         
       </>)}

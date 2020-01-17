@@ -41,6 +41,11 @@ function zoneReducer(currentState, action) {
         isMuted: action.isMuted,
         zoneCurrentInput: action.zoneCurrentInput
       }
+    case 'change-source':
+      return {
+        ...currentState,
+        zoneCurrentInput: action.zoneCurrentInput
+      }
 
     default: 
       throw new Error(`Unhandled action type: ${action.type}`)
