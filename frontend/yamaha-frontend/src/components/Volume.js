@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useZoneState, useZoneDispatch, VOLUME_INCREMENT } from './ZoneContext'
 import Api from '../lib/Api'
+import { VolumeKnob } from '../components/VolumeKnob.js'
 
 export function Volume({ zoneName }) {
   const [disabled, setDisabled] = useState(false)
@@ -53,7 +54,9 @@ export function Volume({ zoneName }) {
     <div>
       <hr />
       <p>Current volume: {isMuted ? `MUTED (${vol})` : vol} [{volAsPercent}%]</p>
-      
+
+      <VolumeKnob />
+
       {/* <p>Zone: {zoneName}</p> */}
       <button
         disabled={disabled}
