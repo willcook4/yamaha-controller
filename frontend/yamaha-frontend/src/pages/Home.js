@@ -8,7 +8,7 @@ const Wrapper = styled('div')`
   margin: auto 12px;
 
   div:last-of-type {
-    border-bottom: none;
+    /* border-bottom: none; */
   }
 `
 
