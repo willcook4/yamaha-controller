@@ -9,11 +9,8 @@ const Ticks = styled('div')`
 
 const Tick = styled('div')`
   position: absolute;
-  /* background-color: black; */
   background-color: ${props => props.active ? 'steelblue' : 'grey'};
-  /* box-shadow: ${props => props.active ? 'inset 0 0 5px 2px #509eec, 0 0 0 1px #369' : 'inset 0 0 0 0 black'}; */
   width: 3px;
-  /* transition: box-shadow 0.5s; */
   height: ${props => props.tickStyle.height + 'px'}; 
   left: ${props => props.tickStyle.left + 'px'};
   top: ${props => props.tickStyle.top + 'px'};
@@ -34,7 +31,6 @@ const KnobOuter = styled('div')`
   display: flex;
   border-radius: 50%;
   background: linear-gradient(145deg, #e9f0f8, #c4cad1);
-  /* box-shadow: 20px 14px 30px #7b8086, -6px -6px 12px #fbffff; */
   box-shadow: 20px 14px 30px #7b8086, -13px -22px 36px #f2f7f9;
   width: ${props => props.size + 'px'};
   height: ${props => props.size + 'px'};
@@ -108,7 +104,6 @@ class Knob extends Component {
       const tick = {
         deg: deg,
         tickStyle: {
-          // height: size + 10,
           height: 100,
           left: size - 1,
           top: size + 2,
@@ -186,6 +181,7 @@ class Knob extends Component {
           className='knob-outer'
           onMouseDown={this.startDrag}
           // onTouchMove={() => console.log('todo')}
+          // onKeyPress={() => console.log('todo')}
           margin={this.margin}
           >
           <KnobInner
