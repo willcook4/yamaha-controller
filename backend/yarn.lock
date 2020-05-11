@@ -93,10 +93,10 @@ body-parser@1.19.0, body-parser@^1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-bowser@^2.7.0:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.8.1.tgz#35b74165e17b80ba8af6aa4736c2861b001fc09e"
-  integrity sha512-FxxltGKqMHkVa3KtpA+kdnxH0caHPDewccyrK3vW1bsMw6Zco4vRPmMunowX0pXlDZqhxkKSpToADQI2Sk4OeQ==
+bowser@2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.9.0.tgz#3bed854233b419b9a7422d9ee3e85504373821c9"
+  integrity sha512-2ld76tuLBNFekRgmJfT2+3j5MIrP6bFict8WAIT3beq+srz1gcKNAdNKMqHqauQt63NmAa88HfP1/Ypa9Er3HA==
 
 bytes@3.1.0:
   version "3.1.0"
@@ -113,10 +113,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-chalk@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-3.0.0.tgz#3f73c2bf526591f574cc492c51e2456349f844e4"
-  integrity sha512-4D3B6Wf41KOYRFdszmDqMCGq5VV/uMAB273JILmO+3jAlh8X4qDtdtgCR3fxtbLEMzSx22QdhnDcJvu2u1fVwg==
+chalk@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.0.0.tgz#6e98081ed2d17faab615eb52ac66ec1fe6209e72"
+  integrity sha512-N9oWFcegS0sFr9oh1oz2d7Npos6vNoWW9HvtCg5N1KRFpUhaAhvTv5Y58g880fZaEYSNm3qDz8SU1UrGvp+n7A==
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
@@ -412,20 +412,20 @@ helmet-crossdomain@0.4.0:
   resolved "https://registry.yarnpkg.com/helmet-crossdomain/-/helmet-crossdomain-0.4.0.tgz#5f1fe5a836d0325f1da0a78eaa5fd8429078894e"
   integrity sha512-AB4DTykRw3HCOxovD1nPR16hllrVImeFp5VBV9/twj66lJ2nU75DP8FPL0/Jp4jj79JhTfG+pFI2MD02kWJ+fA==
 
-helmet-csp@2.9.4:
-  version "2.9.4"
-  resolved "https://registry.yarnpkg.com/helmet-csp/-/helmet-csp-2.9.4.tgz#801382bac98f2f88706dc5c89d95c7e31af3a4a9"
-  integrity sha512-qUgGx8+yk7Xl8XFEGI4MFu1oNmulxhQVTlV8HP8tV3tpfslCs30OZz/9uQqsWPvDISiu/NwrrCowsZBhFADYqg==
+helmet-csp@2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/helmet-csp/-/helmet-csp-2.10.0.tgz#685dde1747bc16c5e28ad9d91e229a69f0a85e84"
+  integrity sha512-Rz953ZNEFk8sT2XvewXkYN0Ho4GEZdjAZy4stjiEQV3eN7GDxg1QKmYggH7otDyIA7uGA6XnUMVSgeJwbR5X+w==
   dependencies:
-    bowser "^2.7.0"
+    bowser "2.9.0"
     camelize "1.0.0"
     content-security-policy-builder "2.1.0"
     dasherize "2.0.0"
 
-helmet@^3.21.2:
-  version "3.21.2"
-  resolved "https://registry.yarnpkg.com/helmet/-/helmet-3.21.2.tgz#7e2a19d5f6d898a77b5d2858e8e4bb2cda59f19f"
-  integrity sha512-okUo+MeWgg00cKB8Csblu8EXgcIoDyb5ZS/3u0W4spCimeVuCUvVZ6Vj3O2VJ1Sxpyb8jCDvzu0L1KKT11pkIg==
+helmet@^3.22.0:
+  version "3.22.0"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-3.22.0.tgz#3a6f11d931799145f0aff15dbc563cff9e13131f"
+  integrity sha512-Xrqicn2nm1ZIUxP3YGuTBmbDL04neKsIT583Sjh0FkiwKDXYCMUqGqC88w3NUvVXtA75JyR2Jn6jw6ZEMOD+ZA==
   dependencies:
     depd "2.0.0"
     dns-prefetch-control "0.2.0"
@@ -434,7 +434,7 @@ helmet@^3.21.2:
     feature-policy "0.3.0"
     frameguard "3.1.0"
     helmet-crossdomain "0.4.0"
-    helmet-csp "2.9.4"
+    helmet-csp "2.10.0"
     hide-powered-by "1.1.0"
     hpkp "2.0.0"
     hsts "2.2.0"
@@ -671,10 +671,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-ping@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/ping/-/ping-0.2.2.tgz#180fb7508c1dc74793849bce35c8073f9965bce2"
-  integrity sha1-GA+3UIwdx0eThJvONcgHP5llvOI=
+ping@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/ping/-/ping-0.2.3.tgz#352f6a6e3343b69a424f4f52f86c66c7d88e884d"
+  integrity sha512-UiwPl9kpzYIE0iz+EUSjISoVCyg44YckaT3BQ60j4xYuRrxGKH4w3ICSyw6xe3va2zgzD9T0yB8h220PM0Elhg==
   dependencies:
     q "1.x"
     underscore "^1.8.3"
@@ -844,10 +844,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-systeminformation@^4.18.1:
-  version "4.18.1"
-  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.18.1.tgz#18f906722734b9ccb750daae58b54ae01166223d"
-  integrity sha512-VvJ0SKvo8tXAYwFjQkJVzQyy9x/4ubPn2CMdFHER3r1K7AIXSFUZHNlNghi6uBRp5MYTalo9BrIYMx6nSuqU1A==
+systeminformation@^4.25.1:
+  version "4.25.1"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.25.1.tgz#5c092f6e93e824089f3383df6092caf27d7a45b2"
+  integrity sha512-e/t+3a/oVTql4rAwDZxj/WKSeKmH2cHsgh1VD0Z8Yv9fLIuhNNtg2v+Jn9fVQDAtoUVk5t1UW1pn+PLWaS1+pw==
 
 tcp-port-used@^1.0.1:
   version "1.0.1"
@@ -954,10 +954,10 @@ xmlbuilder@~11.0.0:
   resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-11.0.1.tgz#be9bae1c8a046e76b31127726347d0ad7002beb3"
   integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
 
-yamaha-nodejs@^0.9.5:
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/yamaha-nodejs/-/yamaha-nodejs-0.9.5.tgz#d422e14a8e98b8411a11de8795b0a26e026fea3e"
-  integrity sha512-YHfz2aafp+8lTCDpT76+3sJAXnWGPJUOhFCYgOPxNaN9r7WVUlYtmwMs0KXJukQ8VEShEaJij2dJccIW2vhaeQ==
+yamaha-nodejs@^0.9.6:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/yamaha-nodejs/-/yamaha-nodejs-0.9.6.tgz#cc11967cc74c3107eb38ccd16094c8dd7d90f65e"
+  integrity sha512-sn/X2d8X3QhlhDvwhwXG/N65zIwc/stNBcknXG2YdVd81wE1fUfRMVzk317jhAs5Kn3uWZt0s7zeUKCVo0TcJg==
   dependencies:
     bluebird "^3.3.4"
     debug "^2.2.0"
