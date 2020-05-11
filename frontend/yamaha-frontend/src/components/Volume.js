@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { useZoneState, useZoneDispatch, VOLUME_INCREMENT } from './ZoneContext'
 import Api from '../lib/Api'
+import { VolumeControl } from '../components/VolumeControl'
 
 export function Volume({ zoneName }) {
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false) // eslint-disable-line
   const dispatch = useZoneDispatch()
   const { vol, isMuted } = useZoneState()
   
@@ -50,12 +51,10 @@ export function Volume({ zoneName }) {
 
   let volAsPercent = Math.round(((800 - (vol * -1)) / 800) * 100)
   return (
-    <div>
-      <hr />
-      <p>Current volume: {isMuted ? `MUTED (${vol})` : vol} [{volAsPercent}%]</p>
+      // <p>Current volume: {isMuted ? `MUTED (${vol})` : vol} [{volAsPercent}%]</p>
       
-      {/* <p>Zone: {zoneName}</p> */}
-      <button
+      /* <p>Zone: {zoneName}</p>
+      {/* <button
         disabled={disabled}
         onClick={() => changeVolume('UP', zoneName)}
       >Increase</button>
@@ -71,8 +70,15 @@ export function Volume({ zoneName }) {
         disabled={disabled}
         onClick={() => toggleMute(isMuted ? 'UNMUTE' : 'MUTE', zoneName)}
       >{isMuted ? 'UNMUTE' : 'MUTE'}</button>
-        {/* {isMuted ? 'Muted' : 'unmuted'} */}
-      <hr />
-    </div>
+        {/* {isMuted ? 'Muted' : 'unmuted'}
+      {/* <hr />  */
+
+    <VolumeControl
+      volume={volAsPercent}
+      isMuted={isMuted} 
+      volumeDown={() => changeVolume('DOWN', zoneName)}
+      volumeUp={() => changeVolume('UP', zoneName)}
+      toggleMute={() => toggleMute(isMuted ? 'UNMUTE' : 'MUTE', zoneName)}
+    />
   );
 }

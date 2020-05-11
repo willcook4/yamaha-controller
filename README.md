@@ -1,4 +1,7 @@
+# Yamaha reciver controller interface
+
 ## Aim of this project
+
 The aim is to provide an intuitive interface for control of a home theatre receiver. The provided physical remote and web interface is not intuitive or very user friendly. The aim is to make the selection of various inputs and controls automated so that the use of the product is easier for the users.
 
 ## API endpoints needed
@@ -20,6 +23,7 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 - [x]Power Status
 
 ## Build plan
+
 1. [x] Run stand alone tests using the npm package for the above input selections and criteria.
 2. [x] Build an Express API for the above endpoints
 3. [] Build a front-end that uses the API.
@@ -37,26 +41,42 @@ The aim is to provide an intuitive interface for control of a home theatre recei
 - [validate.js, validation library](https://www.npmjs.com/package/validate.js)
 
 ## How to setup and run
+
 - Move into the backend folder
+
 ``` bash
 cd backend
 ```
+
 - Install backend packages
+
 ``` bash
 yarn install
 ```
+
 - Start the backend
+
 ``` bash
 yarn start
 ```
+
 - Optionally develop/run with nodemon (must be globally installed)
+
 ``` bash
 yarn dev
 ```
 
-
 ## Endpoints
+
 See ./backend/ENDPOINTS.md
 
 ## Development notes
+
 - The manual testing file in [Insomnia](https://insomnia.rest/) format file is in /backend/Audio_API_Insomnia.json
+
+## TODO's
+
+- Dockerise (docker-compose the front and backend together to a single container)
+- Add support for front end advanced settings
+  - setting the ip address of the reciever
+  - setting the increment of the volume changes

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 // import styled from 'styled-components'
 import Modal from 'react-responsive-modal'
+import 'react-responsive-modal/styles.css'
 import { useZoneState, useZoneDispatch } from './ZoneContext'
 import { Icon } from '../icons'
 import { Button } from '../components/Button'

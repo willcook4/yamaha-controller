@@ -70,7 +70,9 @@ const ZoneSetup = (props) => {
         })
         setGetStatus(false)
       } catch (err) {      
-        setErrorMsg(err.response.data.message)
+        if(err && err.response && err.response.data && err.response.data.message) {
+          setErrorMsg(err.response.data.message)
+        }
       }
       setLoading(false)
     }
