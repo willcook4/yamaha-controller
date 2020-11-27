@@ -13,7 +13,7 @@
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "ping": "^0.2.3",
-    "systeminformation": "^4.25.1",
+    "systeminformation": "^4.30.5",
     "tcp-port-used": "^1.0.1",
     "validate.js": "^0.13.1",
     "yamaha-nodejs": "^0.9.6"
